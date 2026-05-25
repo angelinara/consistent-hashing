@@ -3,7 +3,7 @@
   "java.project.sourcePaths": ["src", "test"],
   "java.project.outputPath": "build",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "java.saveActions.organizeImports": true
 }
