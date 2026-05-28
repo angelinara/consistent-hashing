@@ -1,5 +1,5 @@
 package consistenthashing;
 
 // TODO:
-public class Redistributor {
+public class HashRingTest {
 }
