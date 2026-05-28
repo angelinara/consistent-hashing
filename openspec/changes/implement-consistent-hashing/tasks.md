@@ -5,14 +5,14 @@
 
 ## 2. Core ring model
 
-- [ ] 2.1 Expand the domain model with the missing types needed by the design, including `Key`, richer `VirtualNode` ownership data, and any value objects required to describe redistribution ranges.
-- [ ] 2.2 Add a `HashRing` implementation backed by a sorted token map and a configurable default virtual-node count.
+- [x] 2.1 Expand the domain model with the missing types needed by the design, including `Key`, richer `VirtualNode` ownership data, and any value objects required to describe redistribution ranges.
+- [x] 2.2 Add a `HashRing` implementation backed by a sorted token map and a configurable default virtual-node count.
 
 ## 3. Ownership and lifecycle behavior
 
-- [ ] 3.1 Implement clockwise key lookup with wraparound and explicit failure when ownership is requested on an empty ring.
-- [ ] 3.2 Implement physical-node add and remove operations so virtual nodes are inserted and removed consistently for each configured replica.
-- [ ] 3.3 Implement key add and remove operations plus an ownership-inspection view that reports which physical node owns each tracked key.
+- [x] 3.1 Implement clockwise key lookup with wraparound and explicit failure when ownership is requested on an empty ring.
+- [x] 3.2 Implement physical-node add and remove operations so virtual nodes are inserted and removed consistently for each configured replica.
+- [x] 3.3 Implement key add and remove operations plus an ownership-inspection view that reports which physical node owns each tracked key.
 
 ## 4. Redistribution reporting
 
