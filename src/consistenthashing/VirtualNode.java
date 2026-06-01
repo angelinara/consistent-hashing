@@ -22,4 +22,9 @@ public class VirtualNode {
     public long getHashPosition() {
         return hashPosition;
     }
+
+    @Override
+    public String toString() {
+        return "VirtualNode{id='" + id + "', node=" + node + ", hashPosition=" + hashPosition + "}";
+    }
 }

@@ -10,4 +10,9 @@ public class Key {
     public String getKey() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return id.toString();
+    }
 }
