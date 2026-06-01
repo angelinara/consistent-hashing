@@ -1,8 +1,5 @@
 package consistenthashing;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,20 +42,9 @@ public class HashRing {
         return node.getId() + "#" + i;
     }
 
-    // TODO: simplify
+    // FIXME: hash code not ideal since only 32 bits and distribution is weaker
     private long hash(String input) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] bytes = md.digest(input.getBytes(StandardCharsets.UTF_8));
-            long h = 0;
-            // convert MD5 into a 8 bit long for the position
-            for (int i = 0; i < 8; i++) {
-                h = (h << 8) | (bytes[i] & 0xFF);
-            }
-            return h;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+        return Math.abs(input.hashCode());
     }
 
     public void addKey(Key key) {
@@ -92,5 +78,10 @@ public class HashRing {
 
     public Map<Key, Node> getOwnership() {
         return Collections.unmodifiableMap(keyOwnership);
+    }
+
+    @Override
+    public String toString() {
+        return ring.toString();
     }
 }
