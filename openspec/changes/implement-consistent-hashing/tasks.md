@@ -21,6 +21,6 @@
 
 ## 5. Verification
 
-- [ ] 5.1 Add tests for virtual-node creation, clockwise lookup, and wraparound assignment.
-- [ ] 5.2 Add tests for empty-ring lookup, key lifecycle operations, and ownership inspection.
+- [x] 5.1 Add tests for virtual-node creation, clockwise lookup, and wraparound assignment.
+- [x] 5.2 Add tests for empty-ring lookup, key lifecycle operations, and ownership inspection.
 - [ ] 5.3 Add tests for redistribution output after node addition and node removal so only affected ownership ranges are reported as changed.

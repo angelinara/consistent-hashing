@@ -43,7 +43,7 @@ public class HashRing {
     }
 
     // FIXME: hash code not ideal since only 32 bits and distribution is weaker
-    private long hash(String input) {
+    public long hash(String input) {
         return Math.abs(input.hashCode());
     }
 
@@ -51,7 +51,7 @@ public class HashRing {
         keyOwnership.put(key, clockwiseLookup(key));
     }
 
-    private Node clockwiseLookup(Key key) {
+    public Node clockwiseLookup(Key key) {
         if (ring.isEmpty()) {
             throw new IllegalStateException("Cannot lookup key on an empty ring");
         }
