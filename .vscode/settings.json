@@ -2,6 +2,11 @@
   "java.project.referencedLibraries": ["lib/**/*.jar"],
   "java.project.sourcePaths": ["src", "test"],
   "java.project.outputPath": "build",
+  "editor.detectIndentation": false,
+  "[java]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
