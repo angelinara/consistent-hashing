@@ -1,6 +1,5 @@
 package consistenthashing;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -18,19 +17,21 @@ public class HashRing {
 
     public void addNode(Node node) {
         for (int i = 0; i < virtualNodeCount; i++) {
-            // compute hash
-            String vnodeId = getVirtualNodeId(node, i);
+            // compute hash of virtual node id
+            String vnodeId = getVirtualNodeId(node.getId(), i);
             long token = hash(vnodeId);
 
+            VirtualNode vnode = new VirtualNode(vnodeId, node, token);
+
             // add virtual node to ring
-            ring.put(token, new VirtualNode(vnodeId, node, token));
+            ring.put(token, vnode);
         }
     }
 
     public void removeNode(Node node) {
         for (int i = 0; i < virtualNodeCount; i++) {
-            // compute hash
-            String vnodeId = getVirtualNodeId(node, i);
+            // compute hash of virtual node id
+            String vnodeId = getVirtualNodeId(node.getId(), i);
             long token = hash(vnodeId);
 
             // remove virtual node from ring
@@ -38,8 +39,8 @@ public class HashRing {
         }
     }
 
-    private static String getVirtualNodeId(Node node, int i) {
-        return node.getId() + "#" + i;
+    private static String getVirtualNodeId(String id, int i) {
+        return id + "#" + i;
     }
 
     // FIXME: hash code not ideal since only 32 bits and distribution is weaker
@@ -77,7 +78,11 @@ public class HashRing {
     }
 
     public Map<Key, Node> getOwnership() {
-        return Collections.unmodifiableMap(keyOwnership);
+        return new HashMap<>(keyOwnership);
+    }
+
+    public NavigableMap<Long, VirtualNode> getRing() {
+        return new TreeMap<>(ring);
     }
 
     @Override
