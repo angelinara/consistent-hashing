@@ -13,7 +13,7 @@ public class Redistributor {
             Key key = entry.getKey();
             Node previousOwner = entry.getValue();
             Node newOwner = after.get(key);
-            if (newOwner != null && previousOwner != newOwner) {
+            if (newOwner != null && !previousOwner.equals(newOwner)) {
                 changes.add(new RangeChange(previousOwner, newOwner));
             }
         }
