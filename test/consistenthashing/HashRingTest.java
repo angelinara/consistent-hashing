@@ -1,7 +1,7 @@
 package consistenthashing;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashMap;
@@ -71,21 +71,21 @@ public class HashRingTest {
     void addKeys() {
         // add one key
         HashRing ring = new HashRing(1);
-        Node node2 = new Node("node2");
-        ring.addNode(node2);
-        Key key = new Key("key1");
-        ring.addKey(key);
+        Node node1 = new Node("node1");
+        ring.addNode(node1);
+        Key key1 = new Key("key1");
+        ring.addKey(key1);
         Map<Key, Node> keyOwnership = new HashMap<>();
-        keyOwnership.put(key, node2);
+        keyOwnership.put(key1, node1);
         assertEquals(keyOwnership, ring.getOwnership());
 
         // add another key
-        Node node3 = new Node("node3");
-        ring.addNode(node3);
-        // This key hashes to node3#0's exact token, so it must map to node3.
-        Key key2 = new Key("node3#0");
+        Node node2 = new Node("node2");
+        ring.addNode(node2);
+        // This key hashes to node2#0's exact token, so it must map to node2
+        Key key2 = new Key("node2#0");
         ring.addKey(key2);
-        keyOwnership.put(key2, node3);
+        keyOwnership.put(key2, node2);
         assertEquals(keyOwnership, ring.getOwnership());
     }
 
@@ -106,31 +106,29 @@ public class HashRingTest {
 
     @Test
     void wraparoundMapsToFirstToken() {
-        HashRing ring = new HashRing(1);
-        Node node = new Node("node1");
-        ring.addNode(node);
-
-        // Find a key hash greater than the node token so lookup
-        // must wrap around to the first token on the ring.
-        long token = ring.hash("node1#0");
-        String wrapKeyId = null;
-        for (int i = 0; i < 1_000_000; i++) {
-            String candidate = "k" + i;
-            if (ring.hash(candidate) > token) {
-                wrapKeyId = candidate;
-                break;
+        HashRing ring = new HashRing(1) {
+            @Override
+            public long hash(String input) {
+                return switch (input) {
+                    case "node1#0" -> 3;
+                    case "node2#0" -> 7;
+                    case "wrap" -> 9;
+                    default -> 0;
+                };
             }
-        }
-        assertNotNull(wrapKeyId);
+        };
 
-        // Create a key whose hash is greater than
-        // the hash of the last token on the ring.
-        Key wrapKey = new Key(wrapKeyId);
-        ring.addKey(wrapKey);
+        Node node1 = new Node("node1");
+        Node node2 = new Node("node2");
 
-        // If wrap-around works, ownership should still resolve
-        // to the first token's node.
-        assertEquals(node, ring.getOwnership().get(wrapKey));
+        ring.addNode(node1);
+        ring.addNode(node2);
+
+        Key wrapKey = new Key("wrap");
+
+        assertNull(ring.getRing().ceilingEntry(ring.hash("wrap")));
+
+        assertEquals(node1, ring.clockwiseLookup(wrapKey));
     }
 
     @Test

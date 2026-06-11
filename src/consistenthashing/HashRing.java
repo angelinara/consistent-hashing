@@ -10,9 +10,15 @@ public class HashRing {
     private final NavigableMap<Long, VirtualNode> ring = new TreeMap<>();
 
     private final int virtualNodeCount;
+    private final int ringSize;
+
+    public HashRing(int virtualNodeCount, int ringSize) {
+        this.virtualNodeCount = virtualNodeCount;
+        this.ringSize = ringSize;
+    }
 
     public HashRing(int virtualNodeCount) {
-        this.virtualNodeCount = virtualNodeCount;
+        this(virtualNodeCount, Integer.MAX_VALUE);
     }
 
     public void addNode(Node node) {
@@ -26,6 +32,7 @@ public class HashRing {
             // add virtual node to ring
             ring.put(token, vnode);
         }
+        rebalanceKeys();
     }
 
     public void removeNode(Node node) {
@@ -37,15 +44,15 @@ public class HashRing {
             // remove virtual node from ring
             ring.remove(token);
         }
+        rebalanceKeys();
     }
 
     private static String getVirtualNodeId(String id, int i) {
         return id + "#" + i;
     }
 
-    // FIXME: hash code not ideal since only 32 bits and distribution is weaker
     public long hash(String input) {
-        return Math.abs(input.hashCode());
+        return Math.abs(input.hashCode()) % ringSize;
     }
 
     public void addKey(Key key) {
@@ -81,8 +88,15 @@ public class HashRing {
         return new HashMap<>(keyOwnership);
     }
 
-    public NavigableMap<Long, VirtualNode> getRing() {
+    public TreeMap<Long, VirtualNode> getRing() {
         return new TreeMap<>(ring);
+    }
+
+    private void rebalanceKeys() {
+        for (Map.Entry<Key, Node> entry : keyOwnership.entrySet()) {
+            Key key = entry.getKey();
+            entry.setValue(clockwiseLookup(key));
+        }
     }
 
     @Override
