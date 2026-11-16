@@ -1,6 +1,16 @@
+BOLD := `printf "\033[1m"`
+RED := `printf "\033[31m"`
+RESET := `printf "\033[0m"`
+
+# List all targets
+[private]
+default:
+    @just --list
+
 # Install dependencies
 [group('setup')]
 install:
+    @echo "{{RED}}{{BOLD}}Installing dependencies...{{RESET}}"
     # @brew install java ant jdtls jq
     @rm -rf lib/
     @mkdir lib
@@ -15,27 +25,26 @@ install:
 # Build project
 [group('dev')]
 build:
+    @echo "{{RED}}{{BOLD}}Building project...{{RESET}}"
     @rm -rf build/
     @mkdir build
     @find src -type f -name "*.java" > sources
     @javac -d build/ -cp .:lib/* @sources -Xlint:unchecked
-    @rm sources
-
-[group('dev')]
-build-test: build
     @find test -type f -name "*Test.java" > testsources
     @if [ -s testsources ]; then \
         javac -d build/ -cp .:lib/*:build/ @testsources -Xlint:unchecked; \
     fi
-    @rm testsources
+    @rm sources testsources
 
 # Run all tests
 [group('dev')]
-test: build-test
+test: build
+    @echo "{{RED}}{{BOLD}}Running tests...{{RESET}}"
     @java -ea -cp .:lib/*:build/ org.junit.platform.console.ConsoleLauncher execute \
         --scan-classpath
 
 # Run the app
 [group('dev')]
 run: build
+    @echo "{{RED}}{{BOLD}}Running the app...{{RESET}}"
     @java -ea -cp .:lib/*:build/ consistenthashing.Main
