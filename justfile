@@ -35,7 +35,7 @@ test: build-test
     @java -ea -cp .:lib/*:build/ org.junit.platform.console.ConsoleLauncher execute \
         --scan-classpath
 
-# Run the server
+# Run the app
 [group('dev')]
 run: build
     @java -ea -cp .:lib/*:build/ consistenthashing.Main
