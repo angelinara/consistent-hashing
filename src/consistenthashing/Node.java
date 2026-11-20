@@ -18,13 +18,12 @@ public class Node {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (!(o instanceof Node)) {
-            return false;
-        }
-        return ((Node) o).id.equals(this.id);
+        return o instanceof Node && ((Node) o).id.equals(this.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
 
