@@ -59,8 +59,8 @@ test: build
     @java -ea -cp .:lib/*:build/ org.junit.platform.console.ConsoleLauncher execute \
         --scan-classpath --disable-banner --details=summary
 
-# Run the app
+# Run a main class, e.g. `just run consistenthashing.Main`
 [group('dev')]
-run: build
-    @echo "{{RED}}{{BOLD}}Running the app...{{RESET}}"
-    @java -ea -cp .:lib/*:build/ consistenthashing.Main
+run main='consistenthashing.Main': build
+    @echo "{{RED}}{{BOLD}}Running {{main}}...{{RESET}}"
+    @java -ea -cp .:lib/*:build/ {{main}}
