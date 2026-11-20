@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Redistributor {
+public final class Redistributor {
+    private Redistributor() {
+    }
+
     // Compare ownership before and after a topology change.
     // Returns one RangeChange per key whose assigned node changed.
     public static List<RangeChange> afterChange(Map<Key, Node> before, Map<Key, Node> after) {

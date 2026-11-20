@@ -88,7 +88,7 @@ public class HashRing {
         return new HashMap<>(keyOwnership);
     }
 
-    public TreeMap<Long, VirtualNode> getRing() {
+    public NavigableMap<Long, VirtualNode> getRing() {
         return new TreeMap<>(ring);
     }
 
