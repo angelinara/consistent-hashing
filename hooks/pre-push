@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+betterleaks git --no-banner
+just lint
+just test
